@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Проигнорированные тесты", 
+    "matchedStatuses": ["skipped"] 
+  },
+  {
+    "name": "Проблема при скачивании файла", 
+	"messageRegex": ".*Ошибка при скачивании файла.*",
+  },
+  {
+    "name": "Отсутствует элемент на странице",	
+	"traceRegex": ".*waiting for presence of element located.*",
+  }
+]
