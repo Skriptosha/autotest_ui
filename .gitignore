@@ -1,3 +1,5 @@
-/.idea
+.allure
+
+.idea
+target
 *.iml
-/target
