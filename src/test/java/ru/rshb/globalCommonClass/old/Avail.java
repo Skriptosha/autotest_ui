@@ -1,4 +1,4 @@
-package ru.rshb.globalCommonClass;
+package ru.rshb.globalCommonClass.old;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

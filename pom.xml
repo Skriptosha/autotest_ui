@@ -11,27 +11,56 @@
         <maven.compiler.version>1.8</maven.compiler.version>
         <project.encode>UTF-8</project.encode>
         <aspectj.version>1.9.1</aspectj.version>
+
         <junit.version>4.12</junit.version>
-        <selenium-java.version>3.14.0</selenium-java.version>
-        <allure-junit4.version>2.7.0</allure-junit4.version>
+        <selenium-java.version>3.141.59</selenium-java.version>
+
+        <allure-junit4.version>2.12.1</allure-junit4.version>
+        <allure-maven.version>2.10.0</allure-maven.version>
+        <reportVersion>2.12.1</reportVersion>
+
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven.compiler.source>${maven.compiler.version}</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.version}</maven.compiler.target>
         <project.build.sourceEncoding>${project.encode}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${project.encode}</project.reporting.outputEncoding>
+
+        <spring.version>5.1.7.RELEASE</spring.version>
     </properties>
     <dependencies>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!--Selenium-->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium-java.version}</version>
         </dependency>
+        <!--Junit-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--Allure 2-->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit4</artifactId>
@@ -89,9 +118,9 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.9</version>
+                <version>${allure-maven.version}</version>
                 <configuration>
-                    <reportVersion>2.7.0</reportVersion>
+                    <reportVersion>${reportVersion}</reportVersion>
                 </configuration>
             </plugin>
         </plugins>
