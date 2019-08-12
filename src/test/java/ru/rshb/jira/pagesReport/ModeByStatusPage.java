@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.jira.ReportStages;
+import ru.rshb.jira.tests.ReportStages;
 
 public class ModeByStatusPage extends ModePageMain {
 

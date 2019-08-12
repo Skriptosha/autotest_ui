@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.old.FindElement;
 import ru.rshb.jira.pagesHandbook.*;
 import ru.rshb.jira.pagesReport.*;
 

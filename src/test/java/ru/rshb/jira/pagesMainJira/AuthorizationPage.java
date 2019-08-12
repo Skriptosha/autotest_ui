@@ -5,7 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GetConfig;
+import ru.rshb.globalCommonClass.GlobalDriver;
+import ru.rshb.globalCommonClass.old.Avail;
 
 public class AuthorizationPage {
     private WebDriver webDriver;
@@ -57,7 +59,7 @@ public class AuthorizationPage {
      * @return возвращает страницу AuthorizationPage
      */
     @Step("Переходим на сайт")
-    public AuthorizationPage geturl(String urlKey) {
+    public AuthorizationPage getURL(String urlKey) {
         webDriver.navigate().to(urlKey);
         if (webDriver.getTitle().contains("Certificate"))
             webDriver.navigate().to("javascript:document.getElementById('overridelink').click()");

@@ -1,7 +1,7 @@
-package ru.rshb.jira;
+package ru.rshb.jira.tests;
 
 import org.junit.Test;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GetConfig;
 
 public class Testing {
     private ReportStages reportStages = new ReportStages();

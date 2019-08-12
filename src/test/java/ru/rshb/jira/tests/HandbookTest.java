@@ -1,10 +1,13 @@
-package ru.rshb.jira;
+package ru.rshb.jira.tests;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.junit4.DisplayName;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GetConfig;
+import ru.rshb.globalCommonClass.GlobalDriver;
+import ru.rshb.globalCommonClass.old.Avail;
 import ru.rshb.jira.pagesMainJira.AuthorizationPage;
 import ru.rshb.jira.pagesMainJira.ReportsPage;
 
@@ -29,7 +32,7 @@ public class HandbookTest extends GlobalDriver {
     public void authorization2() {
         GetConfig.setNameProperties("jiraglobal");
         new AuthorizationPage(webDriver)
-                .geturl(GetConfig.getProperty("urlreport"));
+                .getURL(GetConfig.getProperty("urlreport"));
         Avail.availablePage(GetConfig.getProperty("urlhost"), webDriver, getTimeout());
         GetConfig.setNameProperties("jirahandbook");
     }

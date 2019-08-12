@@ -11,16 +11,18 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.model.Statement;
-import org.openqa.selenium.*;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.rshb.globalCommonClass.old.FindElement;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 /**
  * Класс GlobalDriver содержит Junit4 @BeforeClass и @AfterClass
@@ -28,18 +30,16 @@ import java.nio.file.StandardCopyOption;
  * Возможен параллельный запуск тестов, тесты будут выполняться только на одном Браузере.
  */
 
+@Component
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringConf.class})
 public class DriverUtils {
 
     @Autowired
-    private GetConfig getConfig;
+    private WebDriver webDriver;
 
     @Autowired
-    private InitDriver initDriver;
-
-    @Autowired
-    private static SpringConf springConf;
+    private SpringConf springConf;
 
     private static String HTTPStatus500;
 
@@ -47,8 +47,15 @@ public class DriverUtils {
 
     private static Integer downloadTime;
 
+    private static ApplicationContext applicationContext;
+
     public static Integer getDownloadTime() {
         return downloadTime;
+    }
+
+    @Bean
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 
     /**
@@ -58,33 +65,11 @@ public class DriverUtils {
      */
     @Attachment(value = "Скриншот страницы", type = "image/png")
     private byte[] takeScreenshot() {
-        WebDriver webDriver = initDriver.getWebDriver();
         if (webDriver == null) {
             System.out.println("При попытке сделать скриншот webDriver == null");
             return null;
-        }
-        if (webDriver.getTitle().contains(HTTPStatus500)) {
-            WebElement webElement = FindElement.findElement(By.xpath("/html/body/pre[3]"), webDriver);
-            if (webElement.getText().contains(SQLServerException)) {
-                ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", webElement);
-            }
-        }
-        return ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.BYTES);
-    }
-
-    /**
-     * Необходимо доработать, категории не отображаются
-     */
-    private static void copyCategories() {
-        File src = new File(System.getProperty("user.dir") + "/categories.json");
-        File dst = new File(System.getProperty("user.dir") + "/target/allure-results/categories.json");
-        File dst2 = new File(System.getProperty("user.dir") + "/allure-results/categories.json");
-        try {
-            Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            Files.copy(src.toPath(), dst2.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } else return ((TakesScreenshot) ((OverriddenWebDriver)webDriver).getOriginalWebDriver())
+                .getScreenshotAs(OutputType.BYTES);
     }
 
     @Step("Проверяем страницу")
@@ -132,22 +117,20 @@ public class DriverUtils {
         file.delete();
     }
 
-
-
     private void closePage() {
-        initDriver.getWebDriver().close();
+        webDriver.close();
     }
 
     @BeforeClass
     public static void begin() {
+        InitDriver.setWebDriver();
+        applicationContext = new AnnotationConfigApplicationContext(SpringConf.class);
     }
 
     @AfterClass
     public static void end() {
-        InitDriver initDriver = springConf.getBean(InitDriver.class);
-        initDriver.closeDriver();
-        initDriver.writeEnvironment();
-        copyCategories();
+        InitDriver.closeDriver();
+        InitDriver.writeEnvironment();
     }
 
     @Rule

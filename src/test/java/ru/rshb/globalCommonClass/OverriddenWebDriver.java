@@ -5,18 +5,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class OverriddenWebDriver implements WebDriver {
 
     private WebDriver webDriver;
 
+    @Autowired
     private WebDriverWait webDriverWait;
 
     @Autowired
@@ -24,12 +22,10 @@ public class OverriddenWebDriver implements WebDriver {
 
     public OverriddenWebDriver(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.webDriverWait = new WebDriverWait(webDriver, InitDriver.getTimeout());
     }
 
-    @Bean
-    public WebDriverWait getWebDriverWait(){
-        return webDriverWait;
+    public WebDriver getOriginalWebDriver() {
+        return webDriver;
     }
 
     @Override
@@ -51,12 +47,14 @@ public class OverriddenWebDriver implements WebDriver {
     public List<WebElement> findElements(By by) {
         return webDriverWait.until(webDriver -> webDriver.findElements(by)
                 .stream().map(webElement ->
-                        overriddenWebElement.getOverriddenWebElement(webElement)).collect(Collectors.toList()));
+                        overriddenWebElement.getOverriddenWebElement(webElement))
+                .collect(Collectors.toList()));
     }
 
     @Override
     public WebElement findElement(By by) {
-        return overriddenWebElement.getOverriddenWebElement(webDriverWait.until(webDriver -> webDriver.findElement(by)));
+        return overriddenWebElement.getOverriddenWebElement(webDriverWait
+                .until(webDriver -> webDriver.findElement(by)));
     }
 
     @Override

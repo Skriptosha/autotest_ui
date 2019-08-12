@@ -1,4 +1,4 @@
-package ru.rshb.jira;
+package ru.rshb.jira.tests;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
@@ -9,7 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GetConfig;
+import ru.rshb.globalCommonClass.GlobalDriver;
+import ru.rshb.globalCommonClass.Wait;
 import ru.rshb.jira.pagePlaning543.MarkingBiqActionPage;
 import ru.rshb.jira.pagesMainJira.AuthorizationPage;
 import ru.rshb.jira.pagesMainJira.JiraMainPage;
@@ -31,7 +33,7 @@ public class PlaningTest extends GlobalDriver {
         jiraMainPage = new JiraMainPage(webDriver);
         // Авторизация на сайте
         new AuthorizationPage(webDriver)
-                .geturl(GetConfig.getProperty("url"))
+                .getURL(GetConfig.getProperty("url"))
                 .authorization("testlogin", "testpassword");
     }
 

@@ -11,11 +11,10 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,26 +28,40 @@ public class InitDriver {
 
     private static final String DRIVERS_PATH = "./drivers/";
 
-    private static final String PROPERTY_FILE = "environment.properties";
+    private static final String PROPERTY_FILE = "GetConfig.properties";
 
-    @Autowired
-    private GetConfig getConfig;
 
     /**
-     * Геттер для получения экземпляра ВебДрайвера
+     * Геттер для получения экземпляра WebDriver
      *
-     * @return экземпляр Вебдрайвера
+     * @return экземпляр WebDriver
      */
     @Bean
     public WebDriver getWebDriver() {
         long id = Thread.currentThread().getId();
-        if (thread_webDriver.get(id) != null)
-            return thread_webDriver.get(id);
+        if (threadWebDriver.get(id) != null)
+            return threadWebDriver.get(id);
         else
-            throw new IllegalStateException("По данному threadID " + id + " не найден экземпляр ВебДрайвера");
+            throw new IllegalStateException("По данному threadID " + id + " не найден экземпляр WebDriver");
     }
 
-    private static ConcurrentHashMap<Long, WebDriver> thread_webDriver = new ConcurrentHashMap<>();
+    /**
+     * Геттер для получения экземпляра WebDriverWait
+     *
+     * @return экземпляр WebDriverWait
+     */
+    @Bean
+    public WebDriverWait getWebDriverWait() {
+        long id = Thread.currentThread().getId();
+        if (threadWebDriverWait.get(id) != null)
+            return threadWebDriverWait.get(id);
+        else
+            throw new IllegalStateException("По данному threadID " + id + " не найден экземпляр WebDriverWait");
+    }
+
+    private static ConcurrentHashMap<Long, WebDriver> threadWebDriver = new ConcurrentHashMap<>();
+
+    private static ConcurrentHashMap<Long, WebDriverWait> threadWebDriverWait = new ConcurrentHashMap<>();
 
     public static int getTimeout() {
         return timeout;
@@ -61,29 +74,29 @@ public class InitDriver {
     private static String Server;
     private static String OS;
 
-    @PostConstruct
-    public void setWebDriver() {
-        getConfig.setNameProperties("webdriver");
+    public static void setWebDriver() {
+        GetConfig.setNameProperties("webdriver");
         try {
             Server = Inet4Address.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        timeout = Integer.parseInt(getConfig.getProperty("timeout"));
-        String type = getConfig.getProperty("driver");
+        timeout = Integer.parseInt(GetConfig.getProperty("timeout"));
+        String type = GetConfig.getProperty("driver");
         WebDriver webDriver = null;
         switch (type) {
             case "opera":
-                System.setProperty("webdriver.opera.driver", DRIVERS_PATH + getConfig.getProperty("opera.driver"));
+                System.setProperty("webdriver.opera.driver", DRIVERS_PATH + GetConfig.getProperty("opera.driver"));
                 OperaOptions operaOptions = new OperaOptions();
                 operaOptions.setBinary("C:/Program Files/Opera/" +
-                        getConfig.getProperty("opera.version") + "/opera.exe");
-                webDriver = new OverriddenWebDriver(new OperaDriver(operaOptions));
-                thread_webDriver.put(Thread.currentThread().getId(), webDriver);
+                        GetConfig.getProperty("opera.version") + "/opera.exe");
+                webDriver = new OperaDriver(operaOptions);
+                threadWebDriver.put(Thread.currentThread().getId(), new OverriddenWebDriver(webDriver));
+                threadWebDriverWait.put(Thread.currentThread().getId(), new WebDriverWait(webDriver, timeout));
                 setEnvironment(webDriver);
                 break;
             case "ie":
-                System.setProperty("webdriver.ie.driver", DRIVERS_PATH + getConfig.getProperty("ie.driver"));
+                System.setProperty("webdriver.ie.driver", DRIVERS_PATH + GetConfig.getProperty("ie.driver"));
                 InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
                 internetExplorerOptions.setCapability(InternetExplorerDriver
                         .INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
@@ -91,12 +104,13 @@ public class InitDriver {
                 internetExplorerOptions.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
                 internetExplorerOptions.setCapability(InternetExplorerDriver.NATIVE_EVENTS, true);
                 internetExplorerOptions.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
-                webDriver = new OverriddenWebDriver(new InternetExplorerDriver(internetExplorerOptions));
-                thread_webDriver.put(Thread.currentThread().getId(), webDriver);
+                webDriver = new InternetExplorerDriver(internetExplorerOptions);
+                threadWebDriver.put(Thread.currentThread().getId(), new OverriddenWebDriver(webDriver));
+                threadWebDriverWait.put(Thread.currentThread().getId(), new WebDriverWait(webDriver, timeout));
                 setEnvironment(webDriver);
                 break;
             case "firefox":
-                System.setProperty("webdriver.gecko.driver", DRIVERS_PATH + getConfig.getProperty("firefox.driver"));
+                System.setProperty("webdriver.gecko.driver", DRIVERS_PATH + GetConfig.getProperty("firefox.driver"));
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.addPreference("browser.download.folderList", 2);
                 firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk",
@@ -106,15 +120,17 @@ public class InitDriver {
                 firefoxOptions.addPreference("browser.download.manager.showWhenStarting", false);
                 firefoxOptions.addPreference("browser.download.manager.showAlertOnComplete", false);
                 firefoxOptions.addPreference("browser.download.manager.closeWhenDone", true);
-                webDriver = new OverriddenWebDriver(new FirefoxDriver(firefoxOptions));
-                thread_webDriver.put(Thread.currentThread().getId(), webDriver);
+                webDriver = new FirefoxDriver(firefoxOptions);
+                threadWebDriver.put(Thread.currentThread().getId(), new OverriddenWebDriver(webDriver));
+                threadWebDriverWait.put(Thread.currentThread().getId(), new WebDriverWait(webDriver, timeout));
                 setEnvironment(webDriver);
                 break;
             case "chrome":
-                System.setProperty("webdriver.chrome.driver", DRIVERS_PATH + getConfig.getProperty("chrome.driver"));
+                System.setProperty("webdriver.chrome.driver", DRIVERS_PATH + GetConfig.getProperty("chrome.driver"));
                 ChromeOptions chromeOptions = new ChromeOptions();
-                webDriver = new OverriddenWebDriver(new ChromeDriver(chromeOptions));
-                thread_webDriver.put(Thread.currentThread().getId(), webDriver);
+                webDriver = new ChromeDriver(chromeOptions);
+                threadWebDriver.put(Thread.currentThread().getId(), new OverriddenWebDriver(webDriver));
+                threadWebDriverWait.put(Thread.currentThread().getId(), new WebDriverWait(webDriver, timeout));
                 setEnvironment(webDriver);
                 break;
             default:
@@ -130,8 +146,8 @@ public class InitDriver {
      *
      * @param webDriver ВебДрайвер
      */
-    private void setEnvironment(WebDriver webDriver) {
-        if (thread_webDriver.mappingCount() == 1) {
+    private static void setEnvironment(WebDriver webDriver) {
+        if (threadWebDriver.mappingCount() == 1) {
             Capabilities capabilities = ((RemoteWebDriver) webDriver).getCapabilities();
             Browser = capabilities.getBrowserName();
             BrowserVersion = capabilities.getVersion();
@@ -139,7 +155,7 @@ public class InitDriver {
         }
     }
 
-    void writeEnvironment() {
+    static void writeEnvironment() {
         Properties properties = new Properties();
         properties.setProperty("Браузер", Browser);
         properties.setProperty("Версия Браузера", BrowserVersion);
@@ -156,10 +172,10 @@ public class InitDriver {
         }
     }
 
-    void closeDriver() {
-        WebDriver webDriver = thread_webDriver.get(Thread.currentThread().getId());
+    static void closeDriver() {
+        WebDriver webDriver = threadWebDriver.get(Thread.currentThread().getId());
         if (webDriver != null)
             webDriver.quit();
-        thread_webDriver.remove(Thread.currentThread().getId());
+        threadWebDriver.remove(Thread.currentThread().getId());
     }
 }

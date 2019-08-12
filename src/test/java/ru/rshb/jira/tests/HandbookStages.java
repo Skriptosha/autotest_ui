@@ -1,10 +1,11 @@
-package ru.rshb.jira;
+package ru.rshb.jira.tests;
 
 import io.qameta.allure.Step;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GetConfig;
+import ru.rshb.globalCommonClass.GlobalDriver;
 import ru.rshb.jira.pagesHandbook.*;
 import ru.rshb.jira.pagesMainJira.ReportsPage;
 

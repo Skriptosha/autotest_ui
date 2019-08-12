@@ -1,15 +1,19 @@
-package ru.rshb.jira;
+package ru.rshb.jira.tests;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GetConfig;
+import ru.rshb.globalCommonClass.GlobalDriver;
 import ru.rshb.jira.pagesMainJira.ReportsPage;
 import ru.rshb.jira.pagesReport.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

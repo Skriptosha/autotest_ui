@@ -1,4 +1,4 @@
-package ru.rshb.jira;
+package ru.rshb.jira.tests;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
@@ -7,13 +7,20 @@ import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.rshb.globalCommonClass.*;
+import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.rshb.globalCommonClass.DriverUtils;
+import ru.rshb.globalCommonClass.GetConfig;
+import ru.rshb.globalCommonClass.old.Avail;
 import ru.rshb.jira.pagesMainJira.AuthorizationPage;
 import ru.rshb.jira.pagesMainJira.JiraMainPage;
 
 @Epic("Авторизация Jira")
-public class AuthorizationTest extends GlobalDriver {
+public class AuthorizationTest extends DriverUtils {
     private JiraMainPage jiraMainPage;
+
+    @Autowired
+    private WebDriver webDriver;
 
     /**
      * Тест открытия вкладки Отчеты
@@ -24,15 +31,15 @@ public class AuthorizationTest extends GlobalDriver {
     public void reportJira() {
         jiraMainPage.intechReports();
         Avail.availableNewPage(AuthorizationPage.getJiraMainPageWindowHandle(), Avail.NEWPAGE,
-                GlobalDriver.getWebDriver());
+                webDriver);
     }
 
     @Before
     public void authorization() {
-        jiraMainPage = new JiraMainPage(GlobalDriver.getWebDriver());
+        jiraMainPage = new JiraMainPage(webDriver);
         GetConfig.setNameProperties("jiraglobal");
-        new AuthorizationPage(GlobalDriver.getWebDriver())
-                .geturl(GetConfig.getProperty("url"))
+        new AuthorizationPage(webDriver)
+                .getURL(GetConfig.getProperty("url"))
                 .authorization("testlogin", "testpassword");
     }
 

@@ -12,18 +12,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GetConfig {
     private static ConcurrentHashMap<Long, Properties> thread_Config = new ConcurrentHashMap<>();
 
-    private static final String pack = "src/main/resources";
+    private static final String pack = "src/test/java/resources/";
 
     /**
      * Файл properties должен находиться в src/test/resources/. Для загрузки необходимого файла properties,
      * необходимо вызвать setNameProperties с именем файла.
      * Далее для получения значения вызывается getProperty(key)
      */
-    public void setNameProperties(String nameProperties) {
+    public static void setNameProperties(String nameProperties) {
         readFile(nameProperties);
     }
 
-    private void readFile(String nameProperties) {
+    private static void readFile(String nameProperties) {
         Properties properties = new Properties();
         if (nameProperties != null && !"".equals(nameProperties)) {
             try {
@@ -38,7 +38,7 @@ public class GetConfig {
         }
     }
 
-    public String getProperty(String key) {
+    public static String getProperty(String key) {
         String encodeString = thread_Config.get(Thread.currentThread().getId()).getProperty(key);
         if (encodeString == null) {
             throw new IllegalStateException("Не найдено значение по ключу " + key + "! Файл properties: "

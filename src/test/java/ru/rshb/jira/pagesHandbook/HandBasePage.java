@@ -1,6 +1,5 @@
 package ru.rshb.jira.pagesHandbook;
 
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -11,7 +10,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GlobalDriver;
+import ru.rshb.globalCommonClass.old.FindElement;
 
 import java.util.List;
 

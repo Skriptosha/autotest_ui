@@ -8,8 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.globalCommonClass.FindElement;
-import ru.rshb.jira.ReportStages;
+import ru.rshb.globalCommonClass.old.FindElement;
+import ru.rshb.jira.tests.ReportStages;
 
 public class ModeByStatisticBIQPage extends ModePageMain {
 

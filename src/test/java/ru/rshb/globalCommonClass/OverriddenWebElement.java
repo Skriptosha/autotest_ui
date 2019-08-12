@@ -3,14 +3,12 @@ package ru.rshb.globalCommonClass;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@Scope("prototype")
 public class OverriddenWebElement implements WebElement {
 
     private WebElement webElement;
@@ -74,7 +72,8 @@ public class OverriddenWebElement implements WebElement {
     @Override
     public List<WebElement> findElements(By by) {
         return webDriverWait.until(webDriver -> webElement.findElements(by)).stream().map(webElement ->
-                overriddenWebElement.getOverriddenWebElement(webElement)).collect(Collectors.toList());
+                overriddenWebElement.getOverriddenWebElement(webElement))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -6,9 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.jira.ReportStages;
-
-import java.util.List;
+import ru.rshb.jira.tests.ReportStages;
 
 public class ModeByBiqPage extends ModePageMain {
 

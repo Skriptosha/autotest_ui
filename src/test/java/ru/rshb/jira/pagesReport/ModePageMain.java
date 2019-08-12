@@ -2,13 +2,16 @@ package ru.rshb.jira.pagesReport;
 
 import io.qameta.allure.Step;
 import org.junit.Assert;
-import org.junit.rules.Timeout;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import ru.rshb.jira.ReportStages;
-import ru.rshb.globalCommonClass.*;
+import ru.rshb.globalCommonClass.GlobalDriver;
+import ru.rshb.globalCommonClass.old.FindElement;
+import ru.rshb.jira.tests.ReportStages;
 
 import java.util.ArrayList;
 import java.util.List;
