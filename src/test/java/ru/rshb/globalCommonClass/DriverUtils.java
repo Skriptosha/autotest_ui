@@ -58,13 +58,17 @@ public class DriverUtils {
         return applicationContext;
     }
 
+    public String formatString(String message, String arg){
+        return message.replace("%d", arg);
+    }
+
     /**
      * Сделать скриншот
      *
      * @return скриншот в byte[]
      */
     @Attachment(value = "Скриншот страницы", type = "image/png")
-    private byte[] takeScreenshot() {
+    private byte[] takeScreenshots() {
         if (webDriver == null) {
             System.out.println("При попытке сделать скриншот webDriver == null");
             return null;
@@ -152,8 +156,8 @@ public class DriverUtils {
 
         @Override
         protected void failed(Throwable t, Description description) {
-            takeScreenshot();
-            Wait.waitpage(5);
+            takeScreenshots();
+            Wait.waitpage(3);
         }
     };
 }

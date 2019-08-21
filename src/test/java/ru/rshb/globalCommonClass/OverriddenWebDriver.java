@@ -47,7 +47,7 @@ public class OverriddenWebDriver implements WebDriver {
     public List<WebElement> findElements(By by) {
         return webDriverWait.until(webDriver -> webDriver.findElements(by)
                 .stream().map(webElement ->
-                        overriddenWebElement.getOverriddenWebElement(webElement))
+                        new OverriddenWebElement().getOverriddenWebElement(webElement))
                 .collect(Collectors.toList()));
     }
 

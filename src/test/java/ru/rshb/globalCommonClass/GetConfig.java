@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GetConfig {
     private static ConcurrentHashMap<Long, Properties> thread_Config = new ConcurrentHashMap<>();
 
-    private static final String pack = "src/test/java/resources/";
+    private static final String pack = "src/test/resources/";
 
     /**
      * Файл properties должен находиться в src/test/resources/. Для загрузки необходимого файла properties,

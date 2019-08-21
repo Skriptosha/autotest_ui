@@ -12,7 +12,9 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -30,6 +32,8 @@ public class InitDriver {
 
     private static final String PROPERTY_FILE = "GetConfig.properties";
 
+    @Autowired
+    private Environment environment;
 
     /**
      * Геттер для получения экземпляра WebDriver
@@ -63,12 +67,6 @@ public class InitDriver {
 
     private static ConcurrentHashMap<Long, WebDriverWait> threadWebDriverWait = new ConcurrentHashMap<>();
 
-    public static int getTimeout() {
-        return timeout;
-    }
-
-    private static int timeout;
-
     private static String Browser;
     private static String BrowserVersion;
     private static String Server;
@@ -81,8 +79,8 @@ public class InitDriver {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        timeout = Integer.parseInt(GetConfig.getProperty("timeout"));
         String type = GetConfig.getProperty("driver");
+        int timeout = Integer.parseInt(GetConfig.getProperty("timeout"));
         WebDriver webDriver = null;
         switch (type) {
             case "opera":

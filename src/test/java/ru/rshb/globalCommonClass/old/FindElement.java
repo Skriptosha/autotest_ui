@@ -8,14 +8,14 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.rshb.globalCommonClass.DriverUtils;
-import ru.rshb.globalCommonClass.InitDriver;
+import ru.rshb.globalCommonClass.GetConfig;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FindElement extends DriverUtils {
     public static WebElement findElement(By by, WebDriver webDriver) {
 
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, InitDriver.getTimeout());
+        WebDriverWait webDriverWait = new WebDriverWait(webDriver, Integer.parseInt(GetConfig.getProperty("timeout")));
         final WebElement[] webElement = new WebElement[1];
 
 //        availableJS(webDriver, getTimeout());
@@ -47,7 +47,7 @@ public class FindElement extends DriverUtils {
      */
     public static WebElement click(final By by, final WebElement nestedSearch, WebDriver webDriver) {
         final WebElement[] webElement = new WebElement[1];
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, InitDriver.getTimeout());
+        WebDriverWait webDriverWait = new WebDriverWait(webDriver, Integer.parseInt(GetConfig.getProperty("timeout")));
 
         webDriverWait.until(new ExpectedCondition<Boolean>() {
             @ParametersAreNonnullByDefault
@@ -82,7 +82,7 @@ public class FindElement extends DriverUtils {
      */
     public static WebElement SendKeys(final By by, final String keys, final WebElement nestedSearch,
                                       WebDriver webDriver) {
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, InitDriver.getTimeout());
+        WebDriverWait webDriverWait = new WebDriverWait(webDriver, Integer.parseInt(GetConfig.getProperty("timeout")));
 
         final WebElement[] webElement = new WebElement[1];
 

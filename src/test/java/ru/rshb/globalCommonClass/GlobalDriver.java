@@ -33,8 +33,6 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Класс GlobalDriver содержит Junit4 @BeforeClass и @AfterClass
- * При создании класса теста необходимо просто наследовать его от GlobalDriver
  * Возможен параллельный запуск тестов, тесты будут выполняться только на одном Браузере.
  */
 public class GlobalDriver {
@@ -47,12 +45,6 @@ public class GlobalDriver {
     private static String HTTPStatus500;
 
     private static String SQLServerException;
-
-    private static Integer timetodownload;
-
-    public static Integer getTimetodownload() {
-        return timetodownload;
-    }
 
     /**
      * Геттер для получения экземпляра ВебДрайвера
@@ -81,33 +73,31 @@ public class GlobalDriver {
     private static String OS;
 
     public static void setWebDriver() {
-        getConfig.setNameProperties("webdriver");
+        GetConfig.setNameProperties("webdriver");
         //Титл страницы при проверке страницы
-        HTTPStatus500 = getConfig.getProperty("HTTPStatus500");
+        HTTPStatus500 = GetConfig.getProperty("HTTPStatus500");
         //Ошибка на странице HTTPStatus500
-        SQLServerException = getConfig.getProperty("SQLServerException");
-        //Время скачивания файла
-        timetodownload = Integer.parseInt(getConfig.getProperty("timetodownload"));
+        SQLServerException = GetConfig.getProperty("SQLServerException");
         try {
             Server = Inet4Address.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        timeout = Integer.parseInt(getConfig.getProperty("timeout"));
-        String type = getConfig.getProperty("driver");
+        timeout = Integer.parseInt(GetConfig.getProperty("timeout"));
+        String type = GetConfig.getProperty("driver");
         WebDriver webDriver = null;
         switch (type) {
             case "opera":
-                System.setProperty("webdriver.opera.driver", DRIVERS_PATH + getConfig.getProperty("opera.driver"));
+                System.setProperty("webdriver.opera.driver", DRIVERS_PATH + GetConfig.getProperty("opera.driver"));
                 OperaOptions operaOptions = new OperaOptions();
                 operaOptions.setBinary("C:/Program Files/Opera/" +
-                        getConfig.getProperty("opera.version") + "/opera.exe");
+                        GetConfig.getProperty("opera.version") + "/opera.exe");
                 webDriver = new OperaDriver(operaOptions);
                 thread_webDriver.put(Thread.currentThread().getId(), webDriver);
                 setEnvironment(webDriver);
                 break;
             case "ie":
-                System.setProperty("webdriver.ie.driver", DRIVERS_PATH + getConfig.getProperty("ie.driver"));
+                System.setProperty("webdriver.ie.driver", DRIVERS_PATH + GetConfig.getProperty("ie.driver"));
                 InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
                 internetExplorerOptions.setCapability(InternetExplorerDriver
                         .INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
@@ -120,7 +110,7 @@ public class GlobalDriver {
                 setEnvironment(webDriver);
                 break;
             case "firefox":
-                System.setProperty("webdriver.gecko.driver", DRIVERS_PATH + getConfig.getProperty("firefox.driver"));
+                System.setProperty("webdriver.gecko.driver", DRIVERS_PATH + GetConfig.getProperty("firefox.driver"));
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.addPreference("browser.download.folderList", 2);
                 firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk",
@@ -135,7 +125,7 @@ public class GlobalDriver {
                 setEnvironment(webDriver);
                 break;
             case "chrome":
-                System.setProperty("webdriver.chrome.driver", DRIVERS_PATH + getConfig.getProperty("chrome.driver"));
+                System.setProperty("webdriver.chrome.driver", DRIVERS_PATH + GetConfig.getProperty("chrome.driver"));
                 ChromeOptions chromeOptions = new ChromeOptions();
                 webDriver = new ChromeDriver(chromeOptions);
                 thread_webDriver.put(Thread.currentThread().getId(), webDriver);
@@ -257,7 +247,6 @@ public class GlobalDriver {
                     pageValidation("Ошибка при скачивании файла " + filename + "! Ошибка: " + webDriver.getTitle());
                 }
             }
-            if (count == getTimetodownload()) break;
         }
 
         System.out.println("count " + count);

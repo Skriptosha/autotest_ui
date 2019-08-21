@@ -79,14 +79,15 @@
                     <parallel>classes</parallel>
                     <threadCount>2</threadCount>
                     <excludes>
-                        <!--<exclude>AuthorizationTest.java</exclude>-->
-                        <!--<exclude>HandbookTest.java</exclude>-->
+                        <exclude>AuthorizationTest.java</exclude>
+                        <exclude>HandbookTest.java</exclude>
                         <exclude>Testing.java</exclude>
-                        <!--<exclude>ReportTest.java</exclude>-->
-                        <!--<exclude>PlaningTest.java</exclude>-->
+                        <exclude>ReportTest.java</exclude>
+                        <exclude>PlaningTest.java</exclude>
+                        <exclude>Testing.java</exclude>
                     </excludes>
                     <includes>
-                        <!--<include>HandbookTest.java</include>-->
+                        <include>NewTestEx.java</include>
                         <!--<include>ReportTest.java</include>-->
                     </includes>
                     <testFailureIgnore>false</testFailureIgnore>

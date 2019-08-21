@@ -16,9 +16,6 @@ public class OverriddenWebElement implements WebElement {
     @Autowired
     private WebDriverWait webDriverWait;
 
-    @Autowired
-    private OverriddenWebElement overriddenWebElement;
-
     public WebElement getOverriddenWebElement(WebElement webElement){
         this.webElement = webElement;
         return this;
@@ -72,7 +69,7 @@ public class OverriddenWebElement implements WebElement {
     @Override
     public List<WebElement> findElements(By by) {
         return webDriverWait.until(webDriver -> webElement.findElements(by)).stream().map(webElement ->
-                overriddenWebElement.getOverriddenWebElement(webElement))
+                new OverriddenWebElement().getOverriddenWebElement(webElement))
                 .collect(Collectors.toList());
     }
 

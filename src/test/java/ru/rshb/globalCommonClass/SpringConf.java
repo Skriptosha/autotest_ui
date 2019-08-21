@@ -9,9 +9,11 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 @ComponentScan(basePackageClasses = {GetConfig.class},
-basePackages = {"ru.rshb.globalCommonClass", "ru.rshb.jira.tests"}, lazyInit = true)
-@PropertySource({"file:D:\\Проекты Java\\autotest_ui\\src\\test\\java\\resources\\webdriver.properties",
-        "file:D:\\Проекты Java\\autotest_ui\\src\\test\\java\\resources\\jiraglobal.properties"})
+basePackages = {"ru.rshb.globalCommonClass", "ru.rshb.jira.tests", "ru.rshb.legalEntities.pages",
+"ru.rshb.legalEntities.tests"}, lazyInit = true)
+@PropertySource({"classpath:webdriver.properties",
+        "classpath:jiraglobal.properties",
+"classpath:legalEntites.properties"})
 public class SpringConf {
 
     @Autowired
