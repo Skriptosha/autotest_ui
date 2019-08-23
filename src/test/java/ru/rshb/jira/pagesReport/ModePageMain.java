@@ -9,8 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import ru.rshb.globalCommonClass.GlobalDriver;
 import ru.rshb.globalCommonClass.old.FindElement;
+import ru.rshb.globalCommonClass.old.GlobalDriver;
 import ru.rshb.jira.tests.ReportStages;
 
 import java.util.ArrayList;

@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.rshb.globalCommonClass.DriverUtils;
-import ru.rshb.globalCommonClass.GetConfig;
 import ru.rshb.globalCommonClass.old.Avail;
+import ru.rshb.globalCommonClass.old.GetConfig;
 import ru.rshb.jira.pagesMainJira.AuthorizationPage;
 import ru.rshb.jira.pagesMainJira.JiraMainPage;
 

@@ -2,10 +2,10 @@ package ru.rshb.jira.tests;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import ru.rshb.globalCommonClass.GetConfig;
-import ru.rshb.globalCommonClass.GlobalDriver;
 import ru.rshb.globalCommonClass.Wait;
 import ru.rshb.globalCommonClass.old.Avail;
+import ru.rshb.globalCommonClass.old.GetConfig;
+import ru.rshb.globalCommonClass.old.GlobalDriver;
 import ru.rshb.jira.pagesMainJira.AuthorizationPage;
 import ru.rshb.jira.pagesMainJira.JiraMainPage;
 import ru.rshb.jira.pagesMainJira.ReportsPage;

@@ -3,8 +3,8 @@ package ru.rshb.jira.tests;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import ru.rshb.globalCommonClass.GetConfig;
-import ru.rshb.globalCommonClass.GlobalDriver;
+import ru.rshb.globalCommonClass.old.GetConfig;
+import ru.rshb.globalCommonClass.old.GlobalDriver;
 import ru.rshb.jira.pagesMainJira.ReportsPage;
 import ru.rshb.jira.pagesReport.*;
 

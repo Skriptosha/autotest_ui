@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import ru.rshb.globalCommonClass.old.GetConfig;
 
 @Configuration
 @ComponentScan(basePackageClasses = {GetConfig.class},
@@ -17,10 +17,11 @@ basePackages = {"ru.rshb.globalCommonClass", "ru.rshb.jira.tests", "ru.rshb.lega
 public class SpringConf {
 
     @Autowired
-    Environment environment;
-
-    @Autowired
     private ApplicationContext applicationContext;
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 
     public <T> T getBean(Class<T> tClass){
         return applicationContext.getBean(tClass.getSimpleName().substring(0, 1)

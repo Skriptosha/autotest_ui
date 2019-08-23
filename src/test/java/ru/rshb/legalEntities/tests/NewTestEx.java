@@ -1,22 +1,27 @@
 package ru.rshb.legalEntities.tests;
 
 import io.qameta.allure.junit4.DisplayName;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.rshb.globalCommonClass.DriverUtils;
+import ru.rshb.globalCommonClass.SpringConf;
 import ru.rshb.legalEntities.pages.AutPage;
 import ru.rshb.legalEntities.pages.MainPage;
 import ru.rshb.legalEntities.pages.UsersPage;
 
 import java.util.List;
 
-@Component
-public class NewTestEx extends DriverUtils {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {SpringConf.class})
+public class NewTestEx {
 
     @Autowired
     private WebDriver webDriver;
@@ -33,6 +38,9 @@ public class NewTestEx extends DriverUtils {
     @Autowired
     private UsersPage usersPage;
 
+    @Autowired
+    private DriverUtils driverUtils;
+
     @Test
     @DisplayName("Тест входа в приложение")
     public void test(){
@@ -47,12 +55,19 @@ public class NewTestEx extends DriverUtils {
                 .admin()
                 .clients();
         Assert.assertNotNull(webElements = mainPage.allClientsBranch(environment.getProperty("branchName1")));
-        webElements.forEach(webElement1 -> System.out.println(webElement1.getText()));
+//        webElements.forEach(webElement1 -> System.out.println(webElement1.getText()));
         webElement = mainPage.findClient(environment.getProperty("testClientINN1"));
         mainPage.checkBoxTable(webElement)
                 .users();
-        Assert.assertTrue("Не тот клиент!",
+        Assert.assertTrue(usersPage.pageTitle(),
                 usersPage.pageTitle().contains(environment.getProperty("testClientName1")));
 
+    }
+
+    @After
+    public void close(){
+        System.out.println(webDriver.toString());
+        if (webDriver != null)
+        webDriver.close();
     }
 }

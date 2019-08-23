@@ -76,8 +76,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <parallel>classes</parallel>
-                    <threadCount>2</threadCount>
+<!--                    <parallel>classes</parallel>-->
+<!--                    <threadCount>2</threadCount>-->
+                    <forkCount>2</forkCount>
+                    <reuseForks>true</reuseForks>
                     <excludes>
                         <exclude>AuthorizationTest.java</exclude>
                         <exclude>HandbookTest.java</exclude>
@@ -88,6 +90,7 @@
                     </excludes>
                     <includes>
                         <include>NewTestEx.java</include>
+                        <include>NewTestEx2.java</include>
                         <!--<include>ReportTest.java</include>-->
                     </includes>
                     <testFailureIgnore>false</testFailureIgnore>

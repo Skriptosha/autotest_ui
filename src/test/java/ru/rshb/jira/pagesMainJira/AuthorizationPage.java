@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.globalCommonClass.GetConfig;
-import ru.rshb.globalCommonClass.GlobalDriver;
 import ru.rshb.globalCommonClass.old.Avail;
+import ru.rshb.globalCommonClass.old.GetConfig;
+import ru.rshb.globalCommonClass.old.GlobalDriver;
 
 public class AuthorizationPage {
     private WebDriver webDriver;
