@@ -1,14 +1,14 @@
-package ru.rshb.jira.pagesMainJira;
+package autotests.ui.jira.pagesMainJira;
 
+import autotests.ui.globalCommonClass.old.FindElement;
+import autotests.ui.jira.pagesHandbook.*;
+import autotests.ui.jira.pagesReport.*;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.globalCommonClass.old.FindElement;
-import ru.rshb.jira.pagesHandbook.*;
-import ru.rshb.jira.pagesReport.*;
 
 public class ReportsPage {
     WebDriver webDriver;

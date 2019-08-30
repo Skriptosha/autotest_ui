@@ -1,5 +1,6 @@
-package ru.rshb.globalCommonClass.old;
+package autotests.ui.globalCommonClass.old;
 
+import autotests.ui.globalCommonClass.Wait;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.junit.AfterClass;
@@ -20,7 +21,6 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import ru.rshb.globalCommonClass.Wait;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -239,7 +239,7 @@ public class GlobalDriver {
 
         while (!file.exists() || !file.isFile()) {
             count++;
-            Wait.waitpage(1);
+            Wait.waitPage(1);
             if (count == 5) {
                 if (webDriver.getTitle().contains(HTTPStatus500)) {
                     pageValidation("Ошибка при скачивании файла " + filename + "! Ошибка: " + HTTPStatus500);
@@ -303,7 +303,7 @@ public class GlobalDriver {
         @Override
         protected void failed(Throwable t, Description description) {
             takeScreenshot();
-            Wait.waitpage(5);
+            Wait.waitPage(5);
         }
     };
 }

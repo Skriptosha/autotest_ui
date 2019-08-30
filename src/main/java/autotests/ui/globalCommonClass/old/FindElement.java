@@ -1,5 +1,6 @@
-package ru.rshb.globalCommonClass.old;
+package autotests.ui.globalCommonClass.old;
 
+import autotests.ui.globalCommonClass.DriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import ru.rshb.globalCommonClass.DriverUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

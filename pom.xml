@@ -67,6 +67,18 @@
             <version>${allure-junit4.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>2.12.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

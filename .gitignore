@@ -1,5 +1,7 @@
 .allure
-
+*.txt
 .idea
 target
 *.iml
+/src/test/resources/jira/
+/src/test/resources/legalEntites/

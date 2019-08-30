@@ -1,7 +1,6 @@
-package ru.rshb.globalCommonClass;
+package autotests.ui.globalCommonClass;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,30 +11,38 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.Inet4Address;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * Реализация для интерфейса WebDriver. Используется для внедрения WebDriverWait в стандартные методы WebDriver"а
+ * Инициализация самого WebDriver происходит в методе init(); После Инициализации может быть получен
+ * через Спринг с помощью @Autowired. Список доступных реализаций WebDriver"а находиться в enum"е WebDrivers.
+ * Получить оригинальный WebDriver можно через геттер getOriginalWebDriver(), а инициализированный WebDriverWait
+ * (является статик полем) через getWebDriverWait(). Не расчитан на использование в параллельных тестах в одной JVM.
+ */
 @Component
 public class OverriddenWebDriver implements WebDriver {
 
+    @Autowired
+    private Logger logger;
+
     private WebDriver webDriver;
 
-    private WebDriverWait webDriverWait;
+    private static WebDriverWait webDriverWait;
+
+    static WebDriverWait getWebDriverWait() {
+        return webDriverWait;
+    }
 
     WebDriver getOriginalWebDriver() {
         return webDriver;
@@ -58,16 +65,16 @@ public class OverriddenWebDriver implements WebDriver {
 
     @Override
     public List<WebElement> findElements(By by) {
+        logger.info("Ищем элементы: " + by.toString());
         return webDriverWait.until(webDriver -> webDriver.findElements(by)
-                .stream().map(webElement ->
-                        new OverriddenWebElement(webElement, webDriverWait))
+                .stream().map(OverriddenWebElement::new)
                 .collect(Collectors.toList()));
     }
 
     @Override
     public WebElement findElement(By by) {
-        return new OverriddenWebElement(webDriverWait
-                .until(webDriver -> webDriver.findElement(by)), webDriverWait);
+        logger.info("Ищем элемент: " + by.toString());
+        return new OverriddenWebElement(webDriverWait.until(webDriver -> webDriver.findElement(by)));
     }
 
     @Override
@@ -112,21 +119,17 @@ public class OverriddenWebDriver implements WebDriver {
 
     private static final String DRIVERS_PATH = "./drivers/";
 
-    private static final String PROPERTY_FILE = "environment.properties";
-
     @Autowired
     private Environment environment;
 
-    @Value("${driver}")
-    private WebDrivers type;
-
     @PostConstruct
     public void init() {
+        WebDrivers type = WebDrivers.valueOf(environment.getProperty("driver"));
+        logger.info("type: " + type.toString());
         switch (type) {
             case opera:
                 System.setProperty("webdriver.opera.driver", DRIVERS_PATH + environment.getProperty("opera.driver"));
                 OperaOptions operaOptions = new OperaOptions();
-                System.out.println(environment.getProperty("opera.path"));
                 operaOptions.setBinary(Objects.requireNonNull(environment.getProperty("opera.path")));
                 operaOptions.setCapability("browserName", "chrome");
                 operaOptions.setCapability("browserVersion", "63.0");
@@ -134,14 +137,7 @@ public class OverriddenWebDriver implements WebDriver {
                 break;
             case ie:
                 System.setProperty("webdriver.ie.driver", DRIVERS_PATH + environment.getProperty("ie.driver"));
-
                 InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
-                internetExplorerOptions.setCapability(InternetExplorerDriver
-                        .INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-                internetExplorerOptions.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
-                internetExplorerOptions.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
-                internetExplorerOptions.setCapability(InternetExplorerDriver.NATIVE_EVENTS, true);
-                internetExplorerOptions.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
                 webDriver = new InternetExplorerDriver(internetExplorerOptions);
                 break;
             case firefox:
@@ -163,36 +159,11 @@ public class OverriddenWebDriver implements WebDriver {
                 ChromeOptions chromeOptions = new ChromeOptions();
                 webDriver = new ChromeDriver(chromeOptions);
                 break;
-            default:
-                System.out.println("Данный [" + type + "] драйвер не установлен! Доступны opera, ie, firefox, chrome");
-                System.exit(0);
-                break;
         }
+        logger.fine("Экземпляр webDriver успешно создан");
         webDriver.manage().window().maximize();
-        setEnvironment(webDriver);
         webDriverWait = new WebDriverWait(webDriver,
                 Integer.parseInt(Objects.requireNonNull(environment.getProperty("timeout"))));
-    }
-
-    /**
-     * Записывает информацию только при первом вызове
-     *
-     * @param webDriver ВебДрайвер
-     */
-    private static void setEnvironment(WebDriver webDriver) {
-        Capabilities capabilities = ((RemoteWebDriver) webDriver).getCapabilities();
-        try {
-            Properties properties = new Properties();
-            properties.setProperty("Браузер", capabilities.getBrowserName());
-            properties.setProperty("Версия Браузера", capabilities.getVersion());
-            properties.setProperty("IPv4", Inet4Address.getLocalHost().getHostAddress());
-            properties.setProperty("Операционная система", capabilities.getPlatform().getPartOfOsName()[0]);
-            File file = new File(System.getProperty("user.dir") + "/target/allure-results/"
-                    + PROPERTY_FILE);
-            if (file.exists() && file.isFile()) file.delete();
-            properties.store(new FileOutputStream(file), "Создание нового файла");
-        } catch (IOException e) {
-            // ничего
-        }
+        logger.fine("Экземпляр webDriverWait успешно создан");
     }
 }

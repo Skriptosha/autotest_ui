@@ -1,4 +1,4 @@
-package ru.rshb.globalCommonClass.old;
+package autotests.ui.globalCommonClass.old;
 
 
 import org.springframework.stereotype.Component;

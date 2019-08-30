@@ -5,10 +5,14 @@
   },
   {
     "name": "Проблема при скачивании файла", 
-	"messageRegex": ".*Ошибка при скачивании файла.*",
+	"messageRegex": ".*Ошибка при скачивании файла.*"
   },
   {
     "name": "Отсутствует элемент на странице",	
-	"traceRegex": ".*waiting for presence of element located.*",
+	"traceRegex": ".*waiting for presence of element located.*"
+  },
+  {
+    "name": "Не был осуществлен переход на нужную страницу",
+    "messageRegex": ".*Некорректная страница!.*"
   }
 ]

@@ -1,13 +1,13 @@
-package ru.rshb.jira.pagesMainJira;
+package autotests.ui.jira.pagesMainJira;
 
+import autotests.ui.globalCommonClass.old.Avail;
+import autotests.ui.globalCommonClass.old.GetConfig;
+import autotests.ui.globalCommonClass.old.GlobalDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import ru.rshb.globalCommonClass.old.Avail;
-import ru.rshb.globalCommonClass.old.GetConfig;
-import ru.rshb.globalCommonClass.old.GlobalDriver;
 
 public class AuthorizationPage {
     private WebDriver webDriver;
